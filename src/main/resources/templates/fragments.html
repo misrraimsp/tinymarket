@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+
+    <head th:fragment="head(title)">
+        <meta charset="UTF-8">
+        <title th:text="${title}"></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" th:href="@{/css/tmstyle.css}" type="text/css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+
+        <!-- submit button -->
+        <button th:fragment="submitButton(text)" class="btn btn-outline-info px-5" type="submit"><span th:text="${text}"></span></button>
+
+        <!-- cancel button (toHome) -->
+        <a th:fragment="cancelButtonToHome(text)" class="btn btn-outline-secondary px-3" th:href="@{/login}"><small th:text="${text}"></small></a>
+
+        <!-- login error -->
+        <div th:fragment="loginError" class="my-2" th:if="${param.error != null}">
+            <div class="alert alert-danger alert-dismissible fade show">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <small><strong>Error: </strong><span th:text="${session[SPRING_SECURITY_LAST_EXCEPTION]}">error</span></small>
+            </div>
+        </div>
+
+        <!-- backend specific object-field errors -->
+        <div th:fragment="backendFieldErrors(field)" class="mt-n2" th:if="${#fields.hasErrors(field)}">
+            <div class="alert alert-danger alert-dismissible fade show mb-1" th:each="error : ${#fields.errors(field)}">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <small><strong>Error: </strong><span th:text="${error}"></span></small>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <footer class="footer bg-white text-center pb-3" th:fragment="footer">
+            <hr class="hr-footer"/>
+            <span><a class="no-decoration text-info" href="https://github.com/misrraimsp/tinymarket">TinyMarket Project</a> © 2020</span>
+        </footer>
+
+    </body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+    <head th:replace="fragments::head('TinyMarket Registration')"></head>
+    <body>
+        <!-- tm-content -->
+        <div class="container-fluid tm-content">
+            <!-- Title -->
+            <div class="row mt-5 mb-3">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <h2 class="text-dark font-weight-light" >Register to TinyMarket</h2>
+                    <hr/>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+            <div class="row">
+                <!-- left margin -->
+                <div class="col-sm-4"></div>
+                <!-- form -->
+                <div class="col-sm-4">
+                    <form class="needs-validation" novalidate th:action="@{/register}" th:object="${userDTO}" method="POST">
+                        <div class="form-row">
+                            <div class="col-sm-12">
+                                <!-- email -->
+                                <div class="form-group">
+                                    <label class="small font-weight-lighter" for="email">E-mail *</label>
+                                    <input class="form-control" type="email" th:field="*{email}" id="email" placeholder="enter your email" required >
+                                    <div class="invalid-feedback">Please fill out this field with your email</div>
+                                </div>
+                                <div th:replace="fragments::backendFieldErrors('email')"></div>
+                                <!-- password -->
+                                <div class="form-group">
+                                    <label class="small font-weight-lighter" for="password">Password *</label>
+                                    <input class="form-control" type="password" th:field="*{password}" id="password" placeholder="enter your password" required />
+                                    <div class="invalid-feedback">Please fill out this field with a valid password</div>
+                                </div>
+                                <div th:replace="fragments::backendFieldErrors('matchingPassword')"></div>
+                                <!-- confirm password -->
+                                <div class="form-group">
+                                    <label class="small font-weight-lighter" for="passwordConfirm">Confirm Password *</label>
+                                    <input class="form-control" type="password" th:field="*{matchingPassword}" id="passwordConfirm" placeholder="confirm your password" required pattern=".*" title="Please enter the same password as above"/>
+                                    <div class="invalid-feedback">Please enter the same password as above</div>
+                                </div>
+                            </div>
+                            <!-- submit or cancel -->
+                            <div class="col-sm-12 d-flex align-items-end">
+                                <button th:replace="fragments::submitButton(text = 'Register')"></button>
+                                <div class="ml-auto">
+                                    <a th:replace="fragments::cancelButtonToHome(text = 'Cancel')"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- right margin -->
+                <div class="col-sm-4"></div>
+            </div>
+        </div>
+        <!-- footer -->
+        <footer th:replace="fragments::footer"></footer>
+        <script th:src="@{/js/disableFormSubmissionOnInvalidField.js}"></script>
+        <script th:src="@{/js/matchingPasswords.js}"></script>
+    </body>
+</html>

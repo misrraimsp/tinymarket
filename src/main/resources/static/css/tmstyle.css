@@ -1,0 +1,42 @@
+
+/******************************* footer */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+}
+
+.tm-content {
+    flex: 1 0 auto; /* https://www.w3schools.com/cssref/css3_pr_flex.asp */
+}
+
+.footer {
+    flex-shrink: 0;
+}
+
+/******************************* gradient */
+.container-fluid {
+    background: linear-gradient(#e9ecef, white);
+}
+
+/******************************* miscellaneous */
+
+.hr-footer {
+    max-width: 33%;
+    margin-top: 3rem;
+}
+
+.hr-login {
+    max-width: 50%;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    margin-left: 0;
+}
+
+a.no-decoration {
+    text-decoration: none;
+}
