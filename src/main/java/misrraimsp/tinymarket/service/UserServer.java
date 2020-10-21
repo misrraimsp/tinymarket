@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import misrraimsp.tinymarket.data.UserRepository;
 import misrraimsp.tinymarket.model.User;
 import misrraimsp.tinymarket.model.dto.UserDTO;
-import misrraimsp.tinymarket.util.Role;
+import misrraimsp.tinymarket.util.enums.Role;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

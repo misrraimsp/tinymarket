@@ -1,4 +1,4 @@
-package misrraimsp.tinymarket.util;
+package misrraimsp.tinymarket.util.enums;
 
 public enum Role {
 

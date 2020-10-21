@@ -40,3 +40,9 @@ body {
 a.no-decoration {
     text-decoration: none;
 }
+
+.text-description {
+    font-style: italic;
+    text-align: justify;
+    text-justify: inter-word;
+}

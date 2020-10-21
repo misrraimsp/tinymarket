@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+    <head th:replace="fragments::head('Products')"></head>
+    <body>
+        <!-- tm-content -->
+        <div class="container-fluid tm-content bg-light">
+            <!-- header -->
+            <div th:replace="fragments::header"></div>
+            <!-- main content -->
+            <div class="row">
+                <!-- SEARCH CRITERIA  -->
+                <div class="col-sm-3 my-5">
+                    <form th:action="@{/user/products}" method="POST">
+                        <!-- query text -->
+                        <div class="form-group">
+                            <label class="small font-weight-lighter" for="text">Search in title or description</label>
+                            <input class="form-control form-control-sm" name="text" id="text" type="text" />
+                        </div>
+                        <!-- category -->
+                        <div class="form-group">
+                            <label class="small font-weight-lighter" for="category">Category</label>
+                            <select class="custom-select" name="category" id="category">
+                                <option></option>
+                                <option th:each="cat : ${T(misrraimsp.tinymarket.util.enums.Category).values()}"
+                                        th:value="${cat.ordinal()}"
+                                        th:text="${cat.text}">
+                                </option>
+                            </select>
+                        </div>
+                        <!-- price -->
+                        <div class="form-group">
+                            <label class="small font-weight-lighter" for="price">Price</label>
+                            <select class="custom-select" name="price" id="price">
+                                <option></option>
+                                <option th:each="price : ${T(misrraimsp.tinymarket.util.enums.PriceInterval).values()}"
+                                        th:value="${price.ordinal()}"
+                                        th:text="${price.text}">
+                                </option>
+                            </select>
+                        </div>
+                        <!-- submit -->
+                        <button type="submit" class="btn btn-outline-info btn-sm btn-block align-center">Search</button>
+                    </form>
+                </div>
+                <!-- SEARCH RESULTS  -->
+                <div class="col-sm-8 my-5">
+                    <!-- products -->
+                    <div class="row d-flex flex-column">
+                        <div class="col-sm-12 my-5" th:if="${products.size() eq 0}">
+                            <p class="text-info font-weight-light text-center mt-3">No results found</p>
+                        </div>
+                        <div class="col-sm-12" th:each="product : ${products}">
+                            <div class="row my-3">
+                                <!-- image -->
+                                <div class="col-sm-3 bg-white">
+                                    <img class="my-3" src="https://via.placeholder.com/150" alt="Image Placeholder"/>
+                                </div>
+                                <!-- product info left -->
+                                <div class="col-sm-6 bg-white">
+                                    <!-- title -->
+                                    <div class="mt-3">
+                                        <p class="text-info font-weight-bold" th:text="${product.title}">Product Title</p>
+                                    </div>
+                                    <!-- category -->
+                                    <div>
+                                        <p class="text-dark" th:text="${product.category.getText()}">Product Category</p>
+                                    </div>
+                                    <!-- description -->
+                                    <div>
+                                        <p class="text-dark text-description" th:text="${product.description}">Product Description</p>
+                                    </div>
+                                </div>
+                                <!-- product info right -->
+                                <div class="col-sm-3 d-flex flex-column bg-white">
+                                    <!-- cart -->
+                                    <div class="my-3">
+                                        <form th:action="@{/user/cart/add}" method="POST">
+                                            <input type="hidden" name="productId" th:value="${product.id}">
+                                            <button type="submit" class="btn btn-outline-info btn-sm btn-block align-center" th:attrappend="disabled=${(product.stock eq 0) ? 'disabled' : null}">
+                                                Add to Cart<i class="fas fa-cart-plus ml-3"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <!-- price -->
+                                    <p class="text-dark">
+                                        <span class="font-weight-light">€ </span><strong th:text="${product.price}"></strong>
+                                    </p>
+                                    <!-- stock alarm -->
+                                    <p class="small mt-n3 font-weight-lighter" th:if="${product.stock eq 0}">
+                                        <span class="text-danger">Sold out</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- right margin  -->
+                <div class="col-sm-1"></div>
+            </div>
+        </div>
+        <!-- footer -->
+        <div th:replace="fragments::footer"></div>
+    </body>
+</html>

@@ -2,7 +2,7 @@ package misrraimsp.tinymarket.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import misrraimsp.tinymarket.util.Role;
+import misrraimsp.tinymarket.util.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

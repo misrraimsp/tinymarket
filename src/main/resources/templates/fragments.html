@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en">
 
     <head th:fragment="head(title)">
@@ -12,9 +13,58 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/9902891181.js" crossorigin="anonymous"></script>
     </head>
 
     <body>
+
+        <!-- Main header -->
+        <div class="row" th:fragment="header">
+            <div class="col-sm-12">
+                <header>
+                    <!-- NavBar -->
+                    <nav class="navbar navbar-expand-sm bg-secondary navbar-dark">
+                        <!-- Toggler/collapsibe Button -->
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <!-- Navbar links -->
+                        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                            <ul class="navbar-nav mr-auto">
+                                <!--customer links-->
+                                <li class="nav-item" sec:authorize="hasRole('ROLE_USER')">
+                                    <a class="nav-link text-white font-weight-bold" th:href="@{/user/products}">Products</a>
+                                </li>
+
+                                <li class="nav-item" sec:authorize="hasRole('ROLE_USER')">
+                                    <a class="nav-link text-white font-weight-bold" th:href="@{/user/cart}">Cart</a>
+                                </li>
+                                <!--admin links-->
+                                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                                    <a class="nav-link text-white font-weight-bold" th:href="@{/admin/orders}">Orders</a>
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav">
+                                <!--user greeting-->
+                                <li class="navbar-text" sec:authorize="hasRole('ROLE_USER')">
+                                    <small class="text-white">Hi <span th:text="${user.email}"/>!</small>
+                                </li>
+                                <!--admin greeting-->
+                                <li class="navbar-text" sec:authorize="hasRole('ROLE_ADMIN')">
+                                    <small class="text-info font-weight-bold">Admin</small>
+                                </li>
+                            </ul>
+                            <!--logout-->
+                            <form class="form-inline p-2" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="POST" id="logoutForm" action="#">
+                                <button class="btn btn-outline-info btn-sm mx-2" type="submit">
+                                    <small class="font-weight-bold text-white">Logout<i class="fas fa-sign-out-alt ml-2"></i></small>
+                                </button>
+                            </form>
+                        </div>
+                    </nav>
+                </header>
+            </div>
+        </div>
 
         <!-- submit button -->
         <button th:fragment="submitButton(text)" class="btn btn-outline-info px-5" type="submit"><span th:text="${text}"></span></button>

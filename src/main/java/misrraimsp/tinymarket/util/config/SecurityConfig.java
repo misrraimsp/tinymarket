@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // authenticate through login form
                 .formLogin()
                 .loginPage("/login")
-                .successForwardUrl("/user/products")
+                .defaultSuccessUrl("/user/products")
                 .failureHandler(customAuthenticationFailureHandler())
 
                 // set logout page
