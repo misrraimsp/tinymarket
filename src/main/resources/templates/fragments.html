@@ -47,7 +47,7 @@
                             <ul class="navbar-nav">
                                 <!--user greeting-->
                                 <li class="navbar-text" sec:authorize="hasRole('ROLE_USER')">
-                                    <small class="text-white">Hi <span th:text="${user.email}"/>!</small>
+                                    <small class="text-white">Hi <span th:text="${user.name}"/>!</small>
                                 </li>
                                 <!--cart-->
                                 <li class="nav-item" sec:authorize="hasRole('ROLE_USER')">

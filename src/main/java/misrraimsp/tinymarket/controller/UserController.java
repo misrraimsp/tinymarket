@@ -108,4 +108,20 @@ public class UserController {
         userServer.addProductToCart(productServer.findById(productId), authUser.getId());
         return "redirect:/user/products";
     }
+
+    @PostMapping("/user/cart/increment")
+    public String processItemIncrement(@RequestParam Long itemId,
+                                       @AuthenticationPrincipal User authUser) {
+
+        userServer.incrementCartItem(itemId, authUser.getId());
+        return "redirect:/user/cart";
+    }
+
+    @PostMapping("/user/cart/decrement")
+    public String processItemDecrement(@RequestParam Long itemId,
+                                       @AuthenticationPrincipal User authUser) {
+
+        userServer.decrementCartItem(itemId, authUser.getId());
+        return "redirect:/user/cart";
+    }
 }

@@ -26,6 +26,11 @@ public class User extends BasicEntity implements UserDetails {
     @JoinColumn(name = "fk_cart")
     private Cart cart;
 
+    public String getName() {
+        String[] parts = email.split("@");
+        return (parts.length == 2) ? parts[0] : email;
+    }
+
     @Override
     public String getUsername() {
         return email;

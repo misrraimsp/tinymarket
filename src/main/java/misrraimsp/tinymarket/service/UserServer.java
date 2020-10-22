@@ -52,4 +52,12 @@ public class UserServer implements UserDetailsService {
     public void addProductToCart(Product product, Long userId) {
         cartServer.addProduct(product, this.findById(userId).getCart());
     }
+
+    public void incrementCartItem(Long itemId, Long userId) {
+        cartServer.incrementItem(itemId, this.findById(userId).getCart());
+    }
+
+    public void decrementCartItem(Long itemId, Long userId) {
+        cartServer.decrementItem(itemId, this.findById(userId).getCart());
+    }
 }

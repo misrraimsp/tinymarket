@@ -49,4 +49,36 @@ public class CartServer {
         LOGGER.info("Product(id={}) added into cart(id={})", product.getId(), cart.getId());
     }
 
+    public void incrementItem(Long itemId, Cart cart) throws EntityNotFoundByIdException {
+        Item itemToIncrement = itemServer.findById(itemId);
+        List<Item> items = new ArrayList<>(cart.getItems());
+        if (!items.contains(itemToIncrement)) {
+            LOGGER.error("Trying to increment an item(id={}) that is not present in the cart(id{})", itemId, cart.getId());
+            return;
+        }
+        itemServer.increment(itemId);
+        cartRepository.save(cart);
+        LOGGER.info("Item(id={}) incremented inside cart(id={})", itemId, cart.getId());
+    }
+
+    public void decrementItem(Long itemId, Cart cart) throws EntityNotFoundByIdException {
+        Item itemToDecrement = itemServer.findById(itemId);
+        List<Item> items = new ArrayList<>(cart.getItems());
+        if (!items.contains(itemToDecrement)) {
+            LOGGER.error("Trying to decrement an item(id={}) that is not present in the cart(id{})", itemId, cart.getId());
+            return;
+        }
+        if (itemToDecrement.getQuantity() > 1){
+            itemServer.decrement(itemToDecrement.getId());
+            cartRepository.save(cart);
+            LOGGER.info("Item(id={}) decremented inside cart(id={})", itemId, cart.getId());
+        }
+        else {
+            items.remove(itemToDecrement);
+            cart.setItems(items);
+            cartRepository.save(cart);
+            itemServer.delete(itemToDecrement);
+            LOGGER.info("Last product of item(id={}) removed inside cart(id={}). Item itself also removed", itemId, cart.getId());
+        }
+    }
 }

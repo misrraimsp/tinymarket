@@ -46,5 +46,17 @@ public class ItemServer {
         LOGGER.info("Item(id={}) incremented (new quantity = {})", item.getId(), item.getQuantity());
     }
 
+    public void decrement(Long id) throws EntityNotFoundByIdException {
+        Item item = this.findById(id);
+        item.setQuantity(item.getQuantity() - 1);
+        itemRepository.save(item);
+        LOGGER.info("Item(id={}) decremented (new quantity = {})", item.getId(), item.getQuantity());
+    }
+
+    public void delete(Item item) {
+        itemRepository.delete(item);
+        LOGGER.info("Item(id={}) deleted", item.getId());
+    }
+
 
 }
