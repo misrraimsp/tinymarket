@@ -49,6 +49,22 @@ body {
     background: #6c757d;
 }
 
+/******************************* pulse */
+@keyframes pulse {
+    0%, 100% {
+        background-color: #ffdf7e;
+    }
+    50% {
+        background-color: #fff3cd;
+    }
+}
+
+/********************************* out-of-stock cart elements */
+.out-of-stock {
+    border-color: #ffeeba;
+    animation: pulse 5s infinite;
+}
+
 /******************************* miscellaneous */
 
 .hr-footer {

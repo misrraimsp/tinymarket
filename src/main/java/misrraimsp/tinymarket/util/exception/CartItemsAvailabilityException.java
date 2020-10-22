@@ -7,15 +7,15 @@ import java.util.List;
 
 public class CartItemsAvailabilityException extends IllegalArgumentException {
 
-    List<CartItem> itemsOutOfStock;
+    List<CartItem> cartItemsOutOfStock;
 
-    public CartItemsAvailabilityException(List<CartItem> itemsOutOfStock) {
+    public CartItemsAvailabilityException(List<CartItem> cartItemsOutOfStock) {
         super("Trying to checkout with cartItems that are not available");
-        this.itemsOutOfStock = itemsOutOfStock;
+        this.cartItemsOutOfStock = cartItemsOutOfStock;
     }
 
-    public List<CartItem> getItemsOutOfStock() {
-        return itemsOutOfStock;
+    public List<CartItem> getCartItemsOutOfStock() {
+        return cartItemsOutOfStock;
     }
 
 }

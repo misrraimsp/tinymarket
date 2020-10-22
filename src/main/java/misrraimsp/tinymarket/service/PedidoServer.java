@@ -25,6 +25,7 @@ public class PedidoServer {
     @Transactional
     public void createPedido(User user, PedidoInfo pedidoInfo) throws CartItemsAvailabilityException {
         List<CartItem> cartItems = new ArrayList<>(user.getCart().getCartItems());
+        if (cartItems.isEmpty()) return;
         productServer.checkAvailabilityFor(cartItems);
         productServer.removeFromStock(cartItems);
         Pedido pedido = pedidoRepository.save(new Pedido());

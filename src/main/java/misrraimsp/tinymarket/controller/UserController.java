@@ -140,6 +140,7 @@ public class UserController {
 
     @PostMapping("/user/checkout")
     public String processCheckout(PedidoInfo pedidoInfo,
+                                  Model model,
                                   @AuthenticationPrincipal User authUser) {
 
         User user = userServer.findById(authUser.getId());
@@ -147,7 +148,9 @@ public class UserController {
             pedidoServer.createPedido(user, pedidoInfo);
         } catch (CartItemsAvailabilityException e) {
             LOGGER.info("Trying to buy more products than availability allows");
-            return "redirect:/user/cart";
+            model.addAttribute("user", user);
+            model.addAttribute("cartItemsOutOfStock", e.getCartItemsOutOfStock());
+            return "cart";
         }
         return "redirect:/user/products";
     }

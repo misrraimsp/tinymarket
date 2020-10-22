@@ -10,6 +10,20 @@
             <div th:replace="fragments::header"></div>
             <!-- title -->
             <div th:replace="fragments::title_1_10_1(text = ${user.name} + '\'s Cart')"></div>
+            <!-- out-of-stock alert box -->
+            <div class="row" th:if="${cartItemsOutOfStock ne null && !cartItemsOutOfStock.isEmpty()}">
+                <!-- left margin -->
+                <div class="col-sm-1"></div>
+                <!-- alert box -->
+                <div class="col-sm-10">
+                    <div class="alert alert-warning alert-dismissible fade show">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <small th:text="#{cartItem.outOfStock}"></small>
+                    </div>
+                </div>
+                <!-- right margin -->
+                <div class="col-sm-1"></div>
+            </div>
             <!-- main content -->
             <div class="row">
                 <!-- left margin -->
@@ -17,7 +31,7 @@
                 <!-- cart items -->
                 <div class="col-sm-7 d-flex flex-column">
                     <!-- items -->
-                    <div class="mb-2 bg-white" th:each="item : ${user.cart.cartItems}">
+                    <div class="mb-2" th:each="item : ${user.cart.cartItems}" th:classappend="${cartItemsOutOfStock ne null && cartItemsOutOfStock.contains(item)} ? 'out-of-stock' : 'bg-white'">
                         <div class="row d-flex align-items-center px-0 mx-0">
                             <!-- image -->
                             <div class="col-sm-4">
