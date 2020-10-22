@@ -22,4 +22,7 @@ public class Cart extends BasicEntity {
         item.setCart(this);
     }
 
+    public int getSize(){
+        return items.stream().mapToInt(Item::getQuantity).sum();
+    }
 }
