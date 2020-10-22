@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-public class OrderInfo extends BasicEntity {
+public class PedidoInfo extends BasicEntity {
     private String name;
     private String email;
     private String phone;

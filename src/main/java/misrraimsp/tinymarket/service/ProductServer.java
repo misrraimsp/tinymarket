@@ -2,14 +2,19 @@ package misrraimsp.tinymarket.service;
 
 import lombok.RequiredArgsConstructor;
 import misrraimsp.tinymarket.data.ProductRepository;
+import misrraimsp.tinymarket.model.CartItem;
 import misrraimsp.tinymarket.model.Product;
-import misrraimsp.tinymarket.util.EntityNotFoundByIdException;
+import misrraimsp.tinymarket.util.exception.CartItemsAvailabilityException;
+import misrraimsp.tinymarket.util.exception.EntityNotFoundByIdException;
 import misrraimsp.tinymarket.util.converter.StringToCategoryConverter;
 import misrraimsp.tinymarket.util.converter.StringToPriceIntervalConverter;
 import misrraimsp.tinymarket.util.enums.Category;
 import misrraimsp.tinymarket.util.enums.PriceInterval;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +22,8 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class ProductServer {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     private final ProductRepository productRepository;
     private final StringToCategoryConverter stringToCategory;
@@ -29,6 +36,32 @@ public class ProductServer {
     public Product findById(Long productId) throws EntityNotFoundByIdException {
         return productRepository.findById(productId).orElseThrow(() ->
                 new EntityNotFoundByIdException(productId, Product.class.getSimpleName()));
+    }
+
+    public void checkAvailabilityFor(List<CartItem> cartItems) throws CartItemsAvailabilityException {
+        List<CartItem> itemsOutOfStock = new ArrayList<>();
+        cartItems.forEach(cartItem -> {
+            Product storedProduct = this.findById(cartItem.getProduct().getId());
+            int originalStock = storedProduct.getStock();
+            int editedStock = originalStock - cartItem.getQuantity();
+            if (editedStock < 0) {
+                itemsOutOfStock.add(cartItem);
+            }
+        });
+        if (!itemsOutOfStock.isEmpty()) {
+            throw new CartItemsAvailabilityException(itemsOutOfStock);
+        }
+    }
+
+    public void removeFromStock(List<CartItem> cartItems) throws EntityNotFoundByIdException {
+        cartItems.forEach(cartItem -> {
+            Product storedProduct = this.findById(cartItem.getProduct().getId());
+            int originalStock = storedProduct.getStock();
+            int editedStock = originalStock - cartItem.getQuantity();
+            storedProduct.setStock(editedStock);
+            productRepository.save(storedProduct);
+            LOGGER.info("Product(id={}) stock decrease from {} to {}", storedProduct.getId(), originalStock, editedStock);
+        });
     }
 
     public List<Product> findSearchResults(String text, String categoryStr, String priceIntervalStr) {

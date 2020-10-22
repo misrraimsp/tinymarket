@@ -3,28 +3,18 @@ package misrraimsp.tinymarket.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.math.BigDecimal;
+import javax.persistence.MappedSuperclass;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Entity
+@MappedSuperclass
 public class Item extends BasicEntity {
 
     @ManyToOne
     @JoinColumn(name = "fk_product")
-    private Product product;
+    protected Product product;
 
-    private int quantity;
-
-    @ManyToOne
-    @JoinColumn(name = "fk_cart")
-    private Cart cart;
-
-    public BigDecimal getPrice() {
-        return product.getPrice().multiply(new BigDecimal(quantity));
-    }
-
+    protected int quantity;
 }

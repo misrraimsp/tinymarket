@@ -16,18 +16,18 @@ import java.util.List;
 public class Cart extends BasicEntity {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "cart")
-    private List<Item> items = new ArrayList<>();
+    private List<CartItem> cartItems = new ArrayList<>();
 
-    public void addItem(Item item) {
-        this.items.add(item);
-        item.setCart(this);
+    public void addCartItem(CartItem cartItem) {
+        this.cartItems.add(cartItem);
+        cartItem.setCart(this);
     }
 
     public int getSize(){
-        return items.stream().mapToInt(Item::getQuantity).sum();
+        return cartItems.stream().mapToInt(CartItem::getQuantity).sum();
     }
 
     public BigDecimal getPrice() {
-        return items.stream().map(Item::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return cartItems.stream().map(CartItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

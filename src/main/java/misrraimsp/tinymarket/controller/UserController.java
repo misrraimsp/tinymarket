@@ -1,11 +1,13 @@
 package misrraimsp.tinymarket.controller;
 
 import lombok.RequiredArgsConstructor;
-import misrraimsp.tinymarket.model.OrderInfo;
+import misrraimsp.tinymarket.model.PedidoInfo;
 import misrraimsp.tinymarket.model.User;
 import misrraimsp.tinymarket.model.dto.UserDTO;
+import misrraimsp.tinymarket.service.PedidoServer;
 import misrraimsp.tinymarket.service.ProductServer;
 import misrraimsp.tinymarket.service.UserServer;
+import misrraimsp.tinymarket.util.exception.CartItemsAvailabilityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,6 +30,7 @@ public class UserController {
 
     private final UserServer userServer;
     private final ProductServer productServer;
+    private final PedidoServer pedidoServer;
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
@@ -131,15 +134,21 @@ public class UserController {
                                    @AuthenticationPrincipal User authUser) {
 
         model.addAttribute("user", userServer.findById(authUser.getId()));
-        model.addAttribute("info", new OrderInfo());
+        model.addAttribute("info", new PedidoInfo());
         return "checkoutForm";
     }
 
     @PostMapping("/user/checkout")
-    public String processCheckout(OrderInfo orderInfo,
+    public String processCheckout(PedidoInfo pedidoInfo,
                                   @AuthenticationPrincipal User authUser) {
 
-        System.out.println(orderInfo);
+        User user = userServer.findById(authUser.getId());
+        try {
+            pedidoServer.createPedido(user, pedidoInfo);
+        } catch (CartItemsAvailabilityException e) {
+            LOGGER.info("Trying to buy more products than availability allows");
+            return "redirect:/user/cart";
+        }
         return "redirect:/user/products";
     }
 }

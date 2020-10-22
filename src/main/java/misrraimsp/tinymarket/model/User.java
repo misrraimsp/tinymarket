@@ -8,8 +8,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Data
@@ -25,6 +27,14 @@ public class User extends BasicEntity implements UserDetails {
     @OneToOne
     @JoinColumn(name = "fk_cart")
     private Cart cart;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Pedido> pedidos = new ArrayList<>();
+
+    public void addPedido(Pedido pedido) {
+        this.pedidos.add(pedido);
+        pedido.setUser(this);
+    }
 
     public String getName() {
         String[] parts = email.split("@");

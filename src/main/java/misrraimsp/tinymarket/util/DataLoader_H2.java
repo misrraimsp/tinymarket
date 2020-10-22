@@ -3,11 +3,11 @@ package misrraimsp.tinymarket.util;
 import misrraimsp.tinymarket.data.ProductRepository;
 import misrraimsp.tinymarket.data.UserRepository;
 import misrraimsp.tinymarket.model.Cart;
-import misrraimsp.tinymarket.model.Item;
+import misrraimsp.tinymarket.model.CartItem;
 import misrraimsp.tinymarket.model.Product;
 import misrraimsp.tinymarket.model.dto.UserDTO;
 import misrraimsp.tinymarket.service.CartServer;
-import misrraimsp.tinymarket.service.ItemServer;
+import misrraimsp.tinymarket.service.CartItemServer;
 import misrraimsp.tinymarket.service.UserServer;
 import misrraimsp.tinymarket.util.enums.Category;
 import misrraimsp.tinymarket.util.enums.Role;
@@ -29,7 +29,7 @@ public class DataLoader_H2 {
                                    UserRepository userRepository,
                                    PasswordEncoder passwordEncoder,
                                    ProductRepository productRepository,
-                                   ItemServer itemServer,
+                                   CartItemServer cartItemServer,
                                    CartServer cartServer) {
 
         return args -> {
@@ -86,17 +86,17 @@ public class DataLoader_H2 {
 
             Cart cartMisrra = cartServer.persist(new Cart());
 
-            Item item1 = new Item();
-            item1.setProduct(p1);
-            item1.setQuantity(3);
-            cartMisrra.addItem(item1);
-            itemServer.persist(item1);
+            CartItem cartItem1 = new CartItem();
+            cartItem1.setProduct(p1);
+            cartItem1.setQuantity(3);
+            cartMisrra.addCartItem(cartItem1);
+            cartItemServer.persist(cartItem1);
 
-            Item item2 = new Item();
-            item2.setProduct(p2);
-            item2.setQuantity(1);
-            cartMisrra.addItem(item2);
-            itemServer.persist(item2);
+            CartItem cartItem2 = new CartItem();
+            cartItem2.setProduct(p2);
+            cartItem2.setQuantity(1);
+            cartMisrra.addCartItem(cartItem2);
+            cartItemServer.persist(cartItem2);
 
             cartServer.persist(cartMisrra);
 

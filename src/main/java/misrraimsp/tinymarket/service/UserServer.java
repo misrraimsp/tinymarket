@@ -6,7 +6,7 @@ import misrraimsp.tinymarket.model.Cart;
 import misrraimsp.tinymarket.model.Product;
 import misrraimsp.tinymarket.model.User;
 import misrraimsp.tinymarket.model.dto.UserDTO;
-import misrraimsp.tinymarket.util.EntityNotFoundByIdException;
+import misrraimsp.tinymarket.util.exception.EntityNotFoundByIdException;
 import misrraimsp.tinymarket.util.enums.Role;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -34,6 +34,10 @@ public class UserServer implements UserDetailsService {
                 new EntityNotFoundByIdException(userId,User.class.getSimpleName()));
     }
 
+    public User persist(User user) {
+        return userRepository.save(user);
+    }
+
     public User persist(UserDTO dto, PasswordEncoder passwordEncoder, Role role, Cart cart) {
         if (role == null) role = Role.CUSTOMER;
         if (cart == null) cart = new Cart();
@@ -42,7 +46,7 @@ public class UserServer implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setRole(role);
         user.setCart(cartServer.persist(cart));
-        return userRepository.save(user);
+        return this.persist(user);
     }
 
     public boolean emailExists(String email) {
@@ -59,5 +63,9 @@ public class UserServer implements UserDetailsService {
 
     public void decrementCartItem(Long itemId, Long userId) {
         cartServer.decrementItem(itemId, this.findById(userId).getCart());
+    }
+
+    public void resetCart(User user) {
+        cartServer.resetCart(user.getCart());
     }
 }
