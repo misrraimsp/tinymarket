@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,5 +25,9 @@ public class Cart extends BasicEntity {
 
     public int getSize(){
         return items.stream().mapToInt(Item::getQuantity).sum();
+    }
+
+    public BigDecimal getPrice() {
+        return items.stream().map(Item::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

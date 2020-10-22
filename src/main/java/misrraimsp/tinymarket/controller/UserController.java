@@ -93,6 +93,14 @@ public class UserController {
         return "redirect:/login";
     }
 
+    @GetMapping("/user/cart")
+    public String showCart(Model model,
+                           @AuthenticationPrincipal User authUser) {
+
+        model.addAttribute("user", userServer.findById(authUser.getId()));
+        return "cart";
+    }
+
     @PostMapping("/user/cart/add")
     public String processCartAdd(@RequestParam Long productId,
                                  @AuthenticationPrincipal User authUser) {

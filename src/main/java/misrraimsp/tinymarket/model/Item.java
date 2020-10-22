@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -21,5 +22,9 @@ public class Item extends BasicEntity {
     @ManyToOne
     @JoinColumn(name = "fk_cart")
     private Cart cart;
+
+    public BigDecimal getPrice() {
+        return product.getPrice().multiply(new BigDecimal(quantity));
+    }
 
 }
