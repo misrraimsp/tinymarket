@@ -3,6 +3,7 @@ package misrraimsp.tinymarket.service;
 import lombok.RequiredArgsConstructor;
 import misrraimsp.tinymarket.data.ProductRepository;
 import misrraimsp.tinymarket.model.Product;
+import misrraimsp.tinymarket.util.EntityNotFoundByIdException;
 import misrraimsp.tinymarket.util.converter.StringToCategoryConverter;
 import misrraimsp.tinymarket.util.converter.StringToPriceIntervalConverter;
 import misrraimsp.tinymarket.util.enums.Category;
@@ -23,6 +24,11 @@ public class ProductServer {
 
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    public Product findById(Long productId) throws EntityNotFoundByIdException {
+        return productRepository.findById(productId).orElseThrow(() ->
+                new EntityNotFoundByIdException(productId, Product.class.getSimpleName()));
     }
 
     public List<Product> findSearchResults(String text, String categoryStr, String priceIntervalStr) {

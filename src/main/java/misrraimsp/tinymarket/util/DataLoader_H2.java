@@ -2,8 +2,12 @@ package misrraimsp.tinymarket.util;
 
 import misrraimsp.tinymarket.data.ProductRepository;
 import misrraimsp.tinymarket.data.UserRepository;
+import misrraimsp.tinymarket.model.Cart;
+import misrraimsp.tinymarket.model.Item;
 import misrraimsp.tinymarket.model.Product;
 import misrraimsp.tinymarket.model.dto.UserDTO;
+import misrraimsp.tinymarket.service.CartServer;
+import misrraimsp.tinymarket.service.ItemServer;
 import misrraimsp.tinymarket.service.UserServer;
 import misrraimsp.tinymarket.util.enums.Category;
 import misrraimsp.tinymarket.util.enums.Role;
@@ -24,29 +28,11 @@ public class DataLoader_H2 {
     CommandLineRunner initDatabase(UserServer userServer,
                                    UserRepository userRepository,
                                    PasswordEncoder passwordEncoder,
-                                   ProductRepository productRepository) {
+                                   ProductRepository productRepository,
+                                   ItemServer itemServer,
+                                   CartServer cartServer) {
 
         return args -> {
-
-            UserDTO misrra = new UserDTO();
-            misrra.setEmail("misrraim@tm.com");
-            misrra.setPassword("misrra");
-            misrra.setMatchingPassword("misrra");
-            userServer.persist(misrra,passwordEncoder,null);
-
-            UserDTO andrea = new UserDTO();
-            andrea.setEmail("andrea@tm.com");
-            andrea.setPassword("andrea");
-            andrea.setMatchingPassword("andrea");
-            userServer.persist(andrea,passwordEncoder, Role.CUSTOMER);
-
-            UserDTO admin = new UserDTO();
-            admin.setEmail("admin@tm.com");
-            admin.setPassword("admin");
-            admin.setMatchingPassword("admin");
-            userServer.persist(admin,passwordEncoder,Role.ADMINISTRATOR);
-
-            userRepository.findAll().forEach(person -> log.info("Loaded " + person.getEmail()));
 
             Product p1 = new Product();
             p1.setTitle("Producto 1");
@@ -97,6 +83,42 @@ public class DataLoader_H2 {
             productRepository.save(p6);
 
             productRepository.findAll().forEach(product -> log.info("Loaded " + product.getTitle()));
+
+            Cart cartMisrra = cartServer.persist(new Cart());
+
+            Item item1 = new Item();
+            item1.setProduct(p1);
+            item1.setQuantity(3);
+            cartMisrra.addItem(item1);
+            itemServer.persist(item1);
+
+            Item item2 = new Item();
+            item2.setProduct(p2);
+            item2.setQuantity(1);
+            cartMisrra.addItem(item2);
+            itemServer.persist(item2);
+
+            cartServer.persist(cartMisrra);
+
+            UserDTO misrra = new UserDTO();
+            misrra.setEmail("misrraim@tm.com");
+            misrra.setPassword("misrra");
+            misrra.setMatchingPassword("misrra");
+            userServer.persist(misrra,passwordEncoder,null, cartMisrra);
+
+            UserDTO andrea = new UserDTO();
+            andrea.setEmail("andrea@tm.com");
+            andrea.setPassword("andrea");
+            andrea.setMatchingPassword("andrea");
+            userServer.persist(andrea,passwordEncoder, Role.CUSTOMER, null);
+
+            UserDTO admin = new UserDTO();
+            admin.setEmail("admin@tm.com");
+            admin.setPassword("admin");
+            admin.setMatchingPassword("admin");
+            userServer.persist(admin,passwordEncoder,Role.ADMINISTRATOR, null);
+
+            userRepository.findAll().forEach(person -> log.info("Loaded " + person.getEmail()));
 
         };
 

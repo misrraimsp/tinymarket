@@ -3,6 +3,7 @@ package misrraimsp.tinymarket.controller;
 import lombok.RequiredArgsConstructor;
 import misrraimsp.tinymarket.model.User;
 import misrraimsp.tinymarket.model.dto.UserDTO;
+import misrraimsp.tinymarket.service.ProductServer;
 import misrraimsp.tinymarket.service.UserServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.Objects;
@@ -24,6 +26,7 @@ public class UserController {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     private final UserServer userServer;
+    private final ProductServer productServer;
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
@@ -85,8 +88,16 @@ public class UserController {
             return "registerForm";
         }
         // persist
-        Long userId = userServer.persist(dto, passwordEncoder, null).getId();
+        Long userId = userServer.persist(dto, passwordEncoder, null, null).getId();
         LOGGER.info("User registered (id={})", userId);
         return "redirect:/login";
+    }
+
+    @PostMapping("/user/cart/add")
+    public String processCartAdd(@RequestParam Long productId,
+                                 @AuthenticationPrincipal User authUser) {
+
+        userServer.addProductToCart(productServer.findById(productId), authUser.getId());
+        return "redirect:/user/products";
     }
 }
