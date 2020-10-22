@@ -1,6 +1,7 @@
 package misrraimsp.tinymarket.controller;
 
 import lombok.RequiredArgsConstructor;
+import misrraimsp.tinymarket.model.OrderInfo;
 import misrraimsp.tinymarket.model.User;
 import misrraimsp.tinymarket.model.dto.UserDTO;
 import misrraimsp.tinymarket.service.ProductServer;
@@ -123,5 +124,22 @@ public class UserController {
 
         userServer.decrementCartItem(itemId, authUser.getId());
         return "redirect:/user/cart";
+    }
+
+    @GetMapping("/user/checkout")
+    public String showCheckoutForm(Model model,
+                                   @AuthenticationPrincipal User authUser) {
+
+        model.addAttribute("user", userServer.findById(authUser.getId()));
+        model.addAttribute("info", new OrderInfo());
+        return "checkoutForm";
+    }
+
+    @PostMapping("/user/checkout")
+    public String processCheckout(OrderInfo orderInfo,
+                                  @AuthenticationPrincipal User authUser) {
+
+        System.out.println(orderInfo);
+        return "redirect:/user/products";
     }
 }

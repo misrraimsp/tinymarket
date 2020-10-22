@@ -9,14 +9,7 @@
             <!-- header -->
             <div th:replace="fragments::header"></div>
             <!-- title -->
-            <div class="row mt-5 mb-3">
-                <div class="col-sm-1"></div>
-                <div class="col-sm-10">
-                    <h2 class="text-dark font-weight-light" th:text="${user.name} + '\'s Cart'">Title</h2>
-                    <hr/>
-                </div>
-                <div class="col-sm-1"></div>
-            </div>
+            <div th:replace="fragments::title_1_10_1(text = ${user.name} + '\'s Cart')"></div>
             <!-- main content -->
             <div class="row">
                 <!-- left margin -->

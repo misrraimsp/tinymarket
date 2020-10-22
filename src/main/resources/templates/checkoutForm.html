@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+    <head th:replace="fragments::head('Checkout')"></head>
+    <body>
+        <!-- tm-content -->
+        <div class="container-fluid tm-content">
+            <!-- header -->
+            <header th:replace="fragments::header"></header>
+            <!-- title -->
+            <div th:replace="fragments::title_1_10_1(text = 'Checkout')"></div>
+            <!-- main content -->
+            <div class="row">
+                <!-- left margin -->
+                <div class="col-sm-1"></div>
+                <!-- checkout form -->
+                <div class="col-sm-7">
+                    <form class="needs-validation" novalidate th:object="${info}" th:action="@{/user/checkout}" method="POST">
+                        <!-------------------------------------------------------------------------Receipt Email-->
+                        <input type="hidden" name="email" th:value="${user.email}">
+                        <!-------------------------------------------------------------------------Recipient details-->
+                        <label class="text-dark font-weight-light">Recipient details</label>
+                        <div class="input-group mb-3">
+                            <!-- full name -->
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><small class="font-weight-lighter">Name *</small></span>
+                            </div>
+                            <input class="form-control" type="text" th:field="*{name}" required>
+                            <!-- phone -->
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><small class="font-weight-lighter">Phone</small></span>
+                            </div>
+                            <input class="max-width-25 form-control" type="text" th:field="*{phone}">
+                            <!-- error -->
+                            <div class="invalid-feedback">Please fill out this field correctly</div>
+                        </div>
+                        <!-------------------------------------------------------------------------Shipping address-->
+                        <label class="mt-1 text-dark font-weight-light">Shipping address</label>
+                        <!-- street line1-->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><small class="font-weight-lighter">Address *</small></span>
+                            </div>
+                            <input class="form-control" type="text" th:field="*{line1}" required>
+                            <div class="invalid-feedback">Please fill out this field correctly</div>
+                        </div>
+                        <!-- street line2-->
+                        <input class="form-control mb-3" type="text" th:field="*{line2}">
+                        <div class="invalid-feedback">Please fill out this field correctly</div>
+                        <!-- city and postal code -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><small class="font-weight-lighter">City *</small></span>
+                            </div>
+                            <input class="form-control" type="text" th:field="*{city}" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><small class="font-weight-lighter">Postal Code *</small></span>
+                            </div>
+                            <input class="max-width-25 form-control" type="text" th:field="*{postalCode}" required>
+                            <div class="invalid-feedback">Please fill out this field correctly</div>
+                        </div>
+                        <!-- province and country -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><small class="font-weight-lighter">Province *</small></span>
+                            </div>
+                            <input class="form-control" type="text" th:field="*{province}" required>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><small class="font-weight-lighter">Country *</small></span>
+                            </div>
+                            <input class="form-control" type="text" th:field="*{country}" required>
+                            <div class="invalid-feedback">Please fill out this field correctly</div>
+                        </div>
+                        <!-------------------------------------------------------------------------Payment info-->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><small class="font-weight-lighter">Card *</small></span>
+                            </div>
+                            <input class="form-control" type="text" th:field="*{card}" required>
+                            <div class="invalid-feedback">Please fill out this field correctly</div>
+                        </div>
+                        <!-------------------------------------------------------------------------Action buttons-->
+                        <div class="d-flex my-2">
+                            <!-- Pay button -->
+                            <button class="btn btn-info px-5 mr-auto" type="submit">
+                                <span class="font-weight-bolder">Pay </span>
+                                <span class="font-weight-lighter">€</span><span class="font-weight-bolder" th:text="${user.cart.price}"></span>
+                            </button>
+                            <!-- Cancel button -->
+                            <a th:replace="fragments::cancelButtonToBack(text = 'Cancel')"></a>
+                        </div>
+                    </form>
+                </div>
+                <!-- purchase summary -->
+                <div class="col-sm-3">
+                    <div class="d-flex flex-column bg-white">
+                        <!-- panel title -->
+                        <div class="align-self-center mt-3 mb-5">
+                            <strong class="text-dark">Purchase Summary</strong>
+                        </div>
+                        <!-- single product -->
+                        <div class="d-flex my-3 mx-3 align-items-end" th:each="item : ${user.cart.items}">
+                            <!-- left content -->
+                            <div class="mr-auto">
+                                <div class="d-flex flex-column">
+                                    <!-- product title -->
+                                    <p class="my-0" >
+                                        <span th:text="${item.product.title}">Product Title</span>
+                                    </p>
+                                    <!-- price composition -->
+                                    <div class="my-0 small text-dark">
+                                        <span th:text="${item.quantity}"></span> x <span class="font-weight-lighter">€ </span><span th:text="${item.product.price}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- right content -->
+                            <div>
+                                <p class="my-0 small text-dark"><span class="font-weight-lighter">€ </span><span th:text="${item.price}">1</span></p>
+                            </div>
+                        </div>
+                        <!-- final price -->
+                        <div class="d-flex my-3 mx-3 text-dark">
+                            <div class="mr-auto"><span class="font-weight-bolder">Total</span></div>
+                            <div><span class="font-weight-lighter">€ </span><span class="font-weight-bolder" th:text="${user.cart.price}">0</span></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- right margin -->
+                <div class="col-sm-1"></div>
+            </div>
+        </div>
+        <!-- footer -->
+        <footer th:replace="fragments::footer"></footer>
+        <script th:src="@{/js/disableFormSubmissionOnInvalidField.js}"></script>
+        <script th:src="@{/js/back.js}"></script>
+    </body>
+</html>

@@ -75,11 +75,24 @@
             </div>
         </div>
 
+        <!-- Title 1 10 1 -->
+        <div class="row mt-5 mb-3" th:fragment="title_1_10_1(text)">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+                <h2 class="text-dark font-weight-light" th:text="${text}">Title</h2>
+                <hr/>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+
         <!-- submit button -->
         <button th:fragment="submitButton(text)" class="btn btn-outline-info px-5" type="submit"><span th:text="${text}"></span></button>
 
         <!-- cancel button (toHome) -->
         <a th:fragment="cancelButtonToHome(text)" class="btn btn-outline-secondary px-3" th:href="@{/login}"><small th:text="${text}"></small></a>
+
+        <!-- cancel button (toBack) -->
+        <a th:fragment="cancelButtonToBack(text)" class="backButton btn btn-outline-secondary px-3" href="#"><small th:text="${text}"></small></a>
 
         <!-- login error -->
         <div th:fragment="loginError" class="my-2" th:if="${param.error != null}">
