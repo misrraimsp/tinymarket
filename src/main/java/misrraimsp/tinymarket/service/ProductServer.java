@@ -66,13 +66,13 @@ public class ProductServer {
 
     public List<Product> findSearchResults(String text, String categoryStr, String priceIntervalStr) {
 
-        if (text.isEmpty() && categoryStr.isEmpty() && priceIntervalStr.isEmpty()) {
+        if (text.isBlank() && categoryStr.isBlank() && priceIntervalStr.isBlank()) {
             return this.findAll();
         } else {
-            Set<Long> idsByText  = (!text.isEmpty()) ? this.getIdsByQueryText(text) : null;
+            Set<Long> idsByText  = (!text.isBlank()) ? this.getIdsByQueryText(text) : null;
 
             Set<Long> idsByCategory;
-            if (!categoryStr.isEmpty()) {
+            if (!categoryStr.isBlank()) {
                 Category category = stringToCategory.convert(categoryStr);
                 idsByCategory =  productRepository.findIdByCategory(category);
             } else {
@@ -80,7 +80,7 @@ public class ProductServer {
             }
 
             Set<Long> idsByPrice;
-            if (!priceIntervalStr.isEmpty()) {
+            if (!priceIntervalStr.isBlank()) {
                 PriceInterval priceInterval = stringToPriceInterval.convert(priceIntervalStr);
                 idsByPrice = productRepository.findIdByPrice(priceInterval.getLowLimit(), priceInterval.getHighLimit());
             } else {
@@ -97,7 +97,7 @@ public class ProductServer {
         Set<Long> idsByQ = new HashSet<>();
         String[] qs = q.split("\\s+");
         for (String query : qs){
-            if (!query.isEmpty()) {
+            if (!query.isBlank()) {
                 idsByQ.addAll(productRepository.findIdByTitleLike("%" + query + "%"));
                 idsByQ.addAll(productRepository.findIdByDescriptionLike("%" + query + "%"));
             }
