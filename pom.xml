@@ -10,7 +10,7 @@
     </parent>
     <groupId>misrraimsp</groupId>
     <artifactId>tinymarket</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>tinymarket</name>
     <description>e-Commerce PoC</description>
 
