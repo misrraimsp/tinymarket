@@ -16,6 +16,7 @@ import java.util.List;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
+@Table(name = "usuario")
 public class User extends BasicEntity implements UserDetails {
 
     private String email;
