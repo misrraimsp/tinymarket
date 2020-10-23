@@ -3,7 +3,11 @@ package misrraimsp.tinymarket.util.enums;
 public enum Category {
 
     SCIENCE("Science"),
-    ART("Art");
+    ART("Art"),
+    HISTORY("History"),
+    GARDEN("Gardening"),
+    SPORT("Sport"),
+    OTHER("Other");
 
     private final String text;
 

@@ -25,6 +25,7 @@ public class Pedido extends BasicEntity {
     private User user;
 
     @OneToOne
+    @JoinColumn(name = "fk_info_pedido")
     private PedidoInfo info;
 
     @Enumerated(EnumType.STRING)

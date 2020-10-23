@@ -4,10 +4,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@Table(name = "info_pedido")
 public class PedidoInfo extends BasicEntity {
     private String name;
     private String email;
