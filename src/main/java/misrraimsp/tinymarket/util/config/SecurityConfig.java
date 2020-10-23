@@ -2,7 +2,8 @@ package misrraimsp.tinymarket.util.config;
 
 import lombok.RequiredArgsConstructor;
 import misrraimsp.tinymarket.service.UserServer;
-import misrraimsp.tinymarket.util.CustomAuthenticationFailureHandler;
+import misrraimsp.tinymarket.util.auth.CustomAuthenticationFailureHandler;
+import misrraimsp.tinymarket.util.auth.CustomAuthenticationSuccessHandler;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -27,13 +29,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new CustomAuthenticationFailureHandler(messageSource);
     }
 
+    @Bean
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler(){
+        return new CustomAuthenticationSuccessHandler();
+    }
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 // authenticate through login form
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/user/products")
+                .successHandler(customAuthenticationSuccessHandler())
                 .failureHandler(customAuthenticationFailureHandler())
 
                 // set logout page

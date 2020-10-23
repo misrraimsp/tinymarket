@@ -8,13 +8,22 @@
         <div class="container-fluid tm-content bg-light">
             <!-- header -->
             <div th:replace="fragments::header"></div>
+            <!-- title -->
+            <div class="row mt-5 mb-3">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-8">
+                    <h2 class="text-dark font-weight-light">Catalog</h2>
+                    <hr/>
+                </div>
+                <div class="col-sm-1"></div>
+            </div>
             <!-- main content -->
             <div class="row">
                 <!-- SEARCH CRITERIA  -->
                 <div class="col-sm-3 my-5">
-                    <form th:action="@{/user/products}" method="GET">
+                    <form class="px-5" th:action="@{/user/products}" method="GET">
                         <fieldset>
-                            <legend>Filter Results</legend>
+                            <legend class="font-weight-lighter">Filter Results</legend>
                             <!-- query text -->
                             <div class="form-group">
                                 <label class="small font-weight-lighter" for="text">Search in title or description</label>

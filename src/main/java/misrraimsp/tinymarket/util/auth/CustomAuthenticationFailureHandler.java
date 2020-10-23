@@ -1,4 +1,4 @@
-package misrraimsp.tinymarket.util;
+package misrraimsp.tinymarket.util.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

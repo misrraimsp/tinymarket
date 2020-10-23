@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+    <head th:replace="fragments::head('Pedidos')"></head>
+    <body>
+        <!-- tm-content -->
+        <div class="container-fluid tm-content">
+            <!-- header -->
+            <header th:replace="fragments::header"></header>
+            <!-- title -->
+            <div th:replace="fragments::title_1_10_1('Pedidos')"></div>
+            <!-- main content -->
+            <div class="row">
+                <!-- left margin -->
+                <div class="col-sm-1"></div>
+                <!-- pedidos -->
+                <div class="col-sm-10 my-5" th:if="${pedidos.size() eq 0}">
+                    <p class="text-info font-weight-light text-center mt-3">No results found</p>
+                </div>
+                <div class="col-sm-10 d-flex flex-column">
+                    <!-- pedido -->
+                    <div class="row bg-white my-3" th:each="pedido : ${pedidos}">
+                        <!-- pedido head -->
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <!-- left info -->
+                                <div class="col-sm-4">
+                                    <p class="font-weight-light text-dark mt-3">
+                                        <small class="font-weight-lighter">Reference: </small><span th:text="${pedido.id}"></span>
+                                    </p>
+                                    <p class="font-weight-light text-dark">
+                                        <small class="font-weight-lighter">Date: </small><span th:text="${pedido.formattedDate}"></span>
+                                    </p>
+                                </div>
+                                <!-- middle info -->
+                                <div class="col-sm-4">
+                                    <p class="font-weight-light text-dark mt-3">
+                                        <small class="font-weight-lighter">User: </small><span th:text="${pedido.user.email}"></span>
+                                    </p>
+                                    <p class="font-weight-light text-dark">
+                                        <small class="font-weight-lighter">Total amount: </small>€ <span th:text="${pedido.totalPrice}"></span>
+                                    </p>
+                                </div>
+                                <!-- right info -->
+                                <div class="col-sm-4">
+                                    <p class="font-weight-light text-dark mt-3">
+                                        <small class="font-weight-lighter">Status: </small><span th:text="${pedido.status.text}"></span>
+                                    </p>
+                                    <div class="mt-n2">
+                                        <form th:action="@{/admin/pedidos}" method="POST">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <select class="custom-select custom-select-sm text-secondary border border-secondary" name="status">
+                                                        <option th:each="status : ${T(misrraimsp.tinymarket.util.enums.StatusPedido).values()}"
+                                                                th:value="${status.ordinal()}"
+                                                                th:text="${status.text}"
+                                                                th:selected="${status.equals(pedido.status)}">
+                                                        </option>
+                                                    </select>
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-sm btn-outline-secondary" type="submit" data-toggle="tooltip" title="Set Pedido Status">
+                                                            <small>Set</small>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- pedido details -->
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <!-- shipping info -->
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <!-- recipient -->
+                                        <div class="col-sm-2 my-3">
+                                            <p class="font-weight-light text-dark">
+                                                <small class="font-weight-lighter">Deliver to: </small><span th:text="${pedido.info.name}"></span>
+                                            </p>
+                                        </div>
+                                        <!-- address -->
+                                        <div class="col-sm-10 my-3">
+                                            <p class="font-weight-light text-dark">
+                                                <small class="font-weight-lighter">At: </small>
+                                                <span th:text="${pedido.info.line1}"></span>
+                                                <span th:if="${pedido.info.line2 ne null && !pedido.info.line2.isBlank()}">- <span th:text="${pedido.info.line2}"></span></span>
+                                                <span> (
+                                                    <span th:text="${pedido.info.postalCode}"></span>, <span th:text="${pedido.info.city}"></span>.
+                                                    <span th:if="${pedido.info.province ne null && !pedido.info.province.isBlank()}"><span th:text="${pedido.info.province}"></span>. </span>
+                                                    <span th:text="${pedido.info.country}"></span>
+                                                    )</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- items info -->
+                                <div class="col-sm-12">
+                                    <!-- item -->
+                                    <div class="row mb-3" th:each="item : ${pedido.pedidoItems}">
+                                        <!-- image -->
+                                        <div class="col-sm-2">
+                                            <img class="img-64" src="https://via.placeholder.com/150" alt="Image Placeholder"/>
+                                        </div>
+                                        <!-- title -->
+                                        <div class="col-sm-4">
+                                            <p class="my-0 text-info font-weight-light" th:text="${item.product.title}">Product Title</p>
+                                        </div>
+                                        <!-- price composition -->
+                                        <div class="col-sm-3">
+                                            <p class="my-0 small text-dark">
+                                                <span th:text="${item.quantity}"></span> x <span class="font-weight-lighter">€</span><span th:text="${item.unitSalesPrice}"></span>
+                                            </p>
+                                        </div>
+                                        <!-- item price -->
+                                        <div class="col-sm-3">
+                                            <p class="text-dark font-weight-light">€ <span th:text="${item.compoundPrice}">19.95</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- right margin -->
+                <div class="col-sm-1"></div>
+            </div>
+        </div>
+        <!-- footer -->
+        <footer th:replace="fragments::footer"></footer>
+    </body>
+</html>

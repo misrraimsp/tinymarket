@@ -92,3 +92,12 @@ a.no-decoration {
 .max-width-25 {
     max-width: 25%;
 }
+
+.img-64 {
+    width: 64px;
+    height: 64px;
+}
+
+.custom-mt {
+    margin-top: 200px;
+}

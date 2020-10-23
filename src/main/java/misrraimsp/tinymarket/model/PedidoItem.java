@@ -18,4 +18,8 @@ public class PedidoItem extends Item {
     @ManyToOne
     @JoinColumn(name = "fk_pedido")
     private Pedido pedido;
+
+    public BigDecimal getCompoundPrice() {
+        return unitSalesPrice.multiply(new BigDecimal(quantity));
+    }
 }
