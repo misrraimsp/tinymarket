@@ -14,9 +14,11 @@
     <name>tinymarket</name>
     <description>e-Commerce PoC</description>
 
+    <!--
     <properties>
         <java.version>11</java.version>
     </properties>
+    -->
 
     <dependencies>
         <dependency>
