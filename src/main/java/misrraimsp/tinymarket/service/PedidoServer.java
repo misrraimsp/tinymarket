@@ -7,6 +7,7 @@ import misrraimsp.tinymarket.data.PedidoRepository;
 import misrraimsp.tinymarket.model.*;
 import misrraimsp.tinymarket.util.enums.StatusPedido;
 import misrraimsp.tinymarket.util.exception.CartItemsAvailabilityException;
+import misrraimsp.tinymarket.util.exception.EntityNotFoundByIdException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,15 @@ public class PedidoServer {
 
     public List<Pedido> findAll() {
         return pedidoRepository.findAll();
+    }
+
+    public Pedido findById(Long pedidoId) throws EntityNotFoundByIdException {
+        return pedidoRepository.findById(pedidoId).orElseThrow(() ->
+                new EntityNotFoundByIdException(pedidoId,Pedido.class.getSimpleName()));
+    }
+
+    public Pedido persist(Pedido pedido) {
+        return pedidoRepository.save(pedido);
     }
 
     @Transactional
@@ -51,5 +61,11 @@ public class PedidoServer {
         user.addPedido(pedido);
         userServer.resetCart(user);
         userServer.persist(user);
+    }
+
+    public void editStatusPedido(Long pedidoId, StatusPedido status) {
+        Pedido pedido = this.findById(pedidoId);
+        pedido.setStatus(status);
+        this.persist(pedido);
     }
 }

@@ -49,6 +49,7 @@
                                     </p>
                                     <div class="mt-n2">
                                         <form th:action="@{/admin/pedidos}" method="POST">
+                                            <input type="hidden" name="pedidoId" th:value="${pedido.id}">
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <select class="custom-select custom-select-sm text-secondary border border-secondary" name="status">

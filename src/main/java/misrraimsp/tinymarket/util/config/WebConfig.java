@@ -2,6 +2,7 @@ package misrraimsp.tinymarket.util.config;
 
 import misrraimsp.tinymarket.util.converter.StringToCategoryConverter;
 import misrraimsp.tinymarket.util.converter.StringToPriceIntervalConverter;
+import misrraimsp.tinymarket.util.converter.StringToStatusPedidoConverter;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(new StringToCategoryConverter());
         registry.addConverter(new StringToPriceIntervalConverter());
+        registry.addConverter(new StringToStatusPedidoConverter());
     }
 
 }
