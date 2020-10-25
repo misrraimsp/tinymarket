@@ -64,13 +64,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // enable csrf protection
                 .and()
                 .csrf()
-                .ignoringAntMatchers("/h2-console/**") // DEV - Make H2-Console non-secured
+                //.ignoringAntMatchers("/h2-console/**") // DEV - Make H2-Console non-secured
+                //.ignoringAntMatchers("/**") // Testing
 
-                // DEV - Allow pages to be loaded in frames from the same origin; needed for H2-Console
+                /* DEV - Allow pages to be loaded in frames from the same origin; needed for H2-Console
                 .and()
                 .headers()
                 .frameOptions()
                 .sameOrigin()
+                */
         ;
     }
 

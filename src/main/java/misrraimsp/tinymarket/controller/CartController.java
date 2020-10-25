@@ -2,6 +2,7 @@ package misrraimsp.tinymarket.controller;
 
 import lombok.RequiredArgsConstructor;
 import misrraimsp.tinymarket.model.User;
+import misrraimsp.tinymarket.service.CartServer;
 import misrraimsp.tinymarket.service.ProductServer;
 import misrraimsp.tinymarket.service.UserServer;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class CartController {
 
-    private final UserServer userServer;
+    private final CartServer cartServer;
     private final ProductServer productServer;
+    private final UserServer userServer;
 
     @GetMapping("/user/cart")
     public String showCart(Model model,
@@ -29,8 +31,7 @@ public class CartController {
     @PostMapping("/user/cart/add")
     public String processCartAdd(@RequestParam Long productId,
                                  @AuthenticationPrincipal User authUser) {
-
-        userServer.addProductToCart(productServer.findById(productId), authUser.getId());
+        cartServer.addItem(productServer.findById(productId), userServer.findById(authUser.getId()).getCart());
         return "redirect:/user/products";
     }
 
@@ -38,7 +39,7 @@ public class CartController {
     public String processItemIncrement(@RequestParam Long itemId,
                                        @AuthenticationPrincipal User authUser) {
 
-        userServer.incrementCartItem(itemId, authUser.getId());
+        cartServer.incrementItem(itemId, userServer.findById(authUser.getId()).getCart());
         return "redirect:/user/cart";
     }
 
@@ -46,7 +47,7 @@ public class CartController {
     public String processItemDecrement(@RequestParam Long itemId,
                                        @AuthenticationPrincipal User authUser) {
 
-        userServer.decrementCartItem(itemId, authUser.getId());
+        cartServer.decrementItem(itemId, userServer.findById(authUser.getId()).getCart());
         return "redirect:/user/cart";
     }
 }

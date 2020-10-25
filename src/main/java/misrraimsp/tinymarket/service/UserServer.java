@@ -3,7 +3,6 @@ package misrraimsp.tinymarket.service;
 import lombok.RequiredArgsConstructor;
 import misrraimsp.tinymarket.data.UserRepository;
 import misrraimsp.tinymarket.model.Cart;
-import misrraimsp.tinymarket.model.Product;
 import misrraimsp.tinymarket.model.User;
 import misrraimsp.tinymarket.model.dto.UserDTO;
 import misrraimsp.tinymarket.util.exception.EntityNotFoundByIdException;
@@ -51,18 +50,6 @@ public class UserServer implements UserDetailsService {
 
     public boolean emailExists(String email) {
         return userRepository.findByEmail(email) != null;
-    }
-
-    public void addProductToCart(Product product, Long userId) {
-        cartServer.addProduct(product, this.findById(userId).getCart());
-    }
-
-    public void incrementCartItem(Long itemId, Long userId) {
-        cartServer.incrementItem(itemId, this.findById(userId).getCart());
-    }
-
-    public void decrementCartItem(Long itemId, Long userId) {
-        cartServer.decrementItem(itemId, this.findById(userId).getCart());
     }
 
     public void resetCart(User user) {

@@ -29,14 +29,13 @@ public class CartItemServer {
                 new EntityNotFoundByIdException(cartItemId, CartItem.class.getSimpleName()));
     }
 
-    public CartItem create(Product product, Cart cart) throws EntityNotFoundByIdException {
+    public void create(Product product, Cart cart) throws EntityNotFoundByIdException {
         CartItem cartItem = new CartItem();
         cartItem.setProduct(product);
         cartItem.setQuantity(1);
         cart.addCartItem(cartItem);
         CartItem savedCartItem = cartItemRepository.save(cartItem);
         LOGGER.info("CartItem(id={}) created (productId={})", savedCartItem.getId(), product.getId());
-        return savedCartItem;
     }
 
     public void increment(Long id) throws EntityNotFoundByIdException {

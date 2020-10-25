@@ -4,8 +4,20 @@ spring:
       prod
       #dev-mariadb
       #dev-h2
+      #test
   jpa:
     show-sql: false
+
+---
+
+spring:
+  profiles: test
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+
 ---
 
 spring:

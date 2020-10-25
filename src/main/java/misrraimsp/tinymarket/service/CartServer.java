@@ -27,7 +27,7 @@ public class CartServer {
         return cartRepository.save(cart);
     }
 
-    public void addProduct(Product product, Cart cart) throws EntityNotFoundByIdException {
+    public void addItem(Product product, Cart cart) throws EntityNotFoundByIdException {
         List<CartItem> cartItems = new ArrayList<>(cart.getCartItems());
         List<Long> matchingItemIds =
                 cartItems
@@ -82,13 +82,7 @@ public class CartServer {
         }
     }
 
-    public void resetCart(Cart cart) {
-        List<CartItem> cartItems = new ArrayList<>(cart.getCartItems());
-        cartItems.forEach(cartItem -> this.removeCartItem(cart, cartItem.getId()));
-        LOGGER.info("Cart(id={}) reset", cart.getId());
-    }
-
-    public void removeCartItem(Cart cart, Long cartItemId) throws EntityNotFoundByIdException {
+    public void removeItem(Cart cart, Long cartItemId) throws EntityNotFoundByIdException {
         //update cart
         CartItem deletingCartItem = cartItemServer.findById(cartItemId);
         List<CartItem> cartItems = new ArrayList<>(cart.getCartItems());
@@ -102,5 +96,11 @@ public class CartServer {
         LOGGER.info("CartItem(id={}) removed from cart(id={})", cartItemId, cart.getId());
         //delete item
         cartItemServer.delete(deletingCartItem);
+    }
+
+    public void resetCart(Cart cart) {
+        List<CartItem> cartItems = new ArrayList<>(cart.getCartItems());
+        cartItems.forEach(cartItem -> this.removeItem(cart, cartItem.getId()));
+        LOGGER.info("Cart(id={}) reset", cart.getId());
     }
 }
