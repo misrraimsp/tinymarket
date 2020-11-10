@@ -1,0 +1,27 @@
+** Tiny E-commerce **
+
+Develop a small ecommerce PoC based on Java EE technology with following sections:
+
+Catalog: 
+    Customers can view lists of items for sale and searching by name, price, etc.
+
+Shopping Cart: 
+    Customers can add/view/delete/modify items to shopping cart and the app remembers it for further access.
+            
+Checkout: 
+    Customers can fill in a form and submit billing info. 
+    
+Orders:    
+    Administrators can enter to review orders and process them, it is ship them to the customer.
+    
+Security: 
+    Users can signup/login/logout.
+    Users can be customers (buyers) or administrators.
+    
+
+Express any assumption, out of the written requirements.
+Make use of Spring, JPA and a relational DB.
+UI can be developed on any technology.
+We ask for clean code, project organization, tests.
+Write down all the relevant decisions made in the implementation.
+The idea is having a PoC that shows your knlowledge, experience and thinking.
